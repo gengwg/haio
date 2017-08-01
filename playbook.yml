@@ -79,7 +79,11 @@
     become: true
 
   - name: chown hadoop dir
-    shell: chown -R -H hadoop:hadoop /opt/hadoop
+    file: 
+      dest: /opt/hadoop/
+      owner: hadoop
+      group: hadoop
+      recurse: yes
     become: true
 
   - name: run ssh-keyscan to add localhost to known_hosts
