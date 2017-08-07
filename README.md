@@ -72,4 +72,12 @@ Time taken: 0.019 seconds, Fetched: 2 row(s)
 hive> drop table test;
 OK
 Time taken: 1.668 seconds
+
+CREATE TABLE IF NOT EXISTS employee ( eid int, name String,
+    salary String, destination String)
+COMMENT 'Employee details'
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY '\t'
+LINES TERMINATED BY '\n'
+STORED AS TEXTFILE;
 ```
