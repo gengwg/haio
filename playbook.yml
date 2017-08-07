@@ -11,20 +11,13 @@
     yum: name=* state=latest
     become: true
 
-  - name: install the 'Development tools' package group
-    yum:
-      name: "@Development tools"
-      state: present
-    become: true
-
-  - name: install epel repo 
+  - name: install epel repo
     yum: name=epel-release state=present
     become: true
 
-  - name: install useful tools 
+  - name: install some useful tools 
     yum: name={{ item }} state=present
     with_items:
-      - python-pip
       - vim
       - net-tools
       - bind-utils
@@ -40,8 +33,6 @@
     become: true
 
   - name: check if hadoop is already downloaded 
-    #command: /usr/bin/test -e /home/vagrant/hadoop-2.7.3.tar.gz
-    #ignore_errors: True
     stat:
       path: /home/vagrant/hadoop-2.7.3.tar.gz
     register: hadoop_download
@@ -49,8 +40,6 @@
   - name: download hadoop 2.7.3 
     get_url:
        url=http://apache.claz.org/hadoop/common/hadoop-2.7.3/hadoop-2.7.3.tar.gz dest=/home/vagrant 
-    #when: hadoop_exists.rc != 0 
-    #when: hadoop_exists.stat.exists == False
     when: not hadoop_download.stat.exists
 
   - name: check hadoop directory existence
@@ -139,4 +128,51 @@
     become: true
     become_user: hadoop
 
+  # Hive
+  - name: check if hive is already downloaded
+    stat:
+      path: /home/vagrant/apache-hive-2.3.0-bin.tar.gz
+    register: hive_download
 
+  - name: download hive 2.3.0
+    get_url:
+       url=http://apache.claz.org/hive/hive-2.3.0/apache-hive-2.3.0-bin.tar.gz dest=/home/vagrant
+    when: not hive_download.stat.exists
+
+  - name: check hive directory existence
+    stat: path=/opt/apache-hive-2.3.0-bin
+    register: hive_dir
+
+  - name: extract hive
+    unarchive: src=/home/vagrant/apache-hive-2.3.0-bin.tar.gz dest=/opt copy=no
+    when: not hive_dir.stat.exists
+    become: true
+
+  - name: create symbolic link
+    file: src=/opt/apache-hive-2.3.0-bin dest=/opt/hive state=link
+    become: true
+
+  - name: chown hive dir
+    file: 
+      dest: /opt/hive/
+      owner: hadoop
+      group: hadoop
+      recurse: yes
+    become: true
+
+  - name: Create /tmp and /user/hive/warehouse and set them chmod g+w in HDFS
+    shell: "{{ item }}"
+    #ignore_errors: True
+    become: true
+    become_user: hadoop
+    with_items:
+      - ". /home/hadoop/.bashrc && hdfs dfs -mkdir /tmp"
+      - ". /home/hadoop/.bashrc && hdfs dfs -mkdir -p /user/hive/warehouse"
+      - ". /home/hadoop/.bashrc && hdfs dfs -chmod g+w /tmp"
+      - ". /home/hadoop/.bashrc && hdfs dfs -chmod g+w /user/hive/warehouse"
+
+  - name: Generate derby metastore
+    shell: . /home/hadoop/.bashrc && /opt/hive/bin/schematool  -dbType derby -initSchema
+    ignore_errors: True
+    become: true
+    become_user: hadoop

@@ -57,10 +57,10 @@ Vagrant.configure(2) do |config|
   #
   # View the documentation for the provider you are using for more
   # information on available options.
-  config.vm.hostname = "hadoop"
+  config.vm.hostname = "haio"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "hadoop-standalone"
+    vb.name = "haio"
     vb.memory = "2048"
   end
 

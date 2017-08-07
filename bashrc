@@ -9,6 +9,8 @@ fi
 # export SYSTEMD_PAGER=
 
 # User specific aliases and functions
+
+## hadoop
 export JAVA_HOME=/usr/lib/jvm/jre
 export HADOOP_HOME=/opt/hadoop-2.7.3
 export HADOOP_INSTALL=$HADOOP_HOME
@@ -19,3 +21,8 @@ export HADOOP_YARN_HOME=$HADOOP_HOME
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
 export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
 export JAVA_LIBRARY_PATH=$HADOOP_HOME/lib/native:$JAVA_LIBRARY_PATH
+
+## hive
+export HIVE_HOME=/opt/hive
+export PATH=$HIVE_HOME/bin:$PATH
+
