@@ -12,7 +12,7 @@ fi
 
 ## hadoop
 export JAVA_HOME=/usr/lib/jvm/jre
-export HADOOP_HOME=/opt/hadoop-2.7.3
+export HADOOP_HOME=/opt/hadoop
 export HADOOP_INSTALL=$HADOOP_HOME
 export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_COMMON_HOME=$HADOOP_HOME

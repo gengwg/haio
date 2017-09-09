@@ -34,29 +34,30 @@
 
   - name: check if hadoop is already downloaded 
     stat:
-      path: /home/vagrant/hadoop-2.7.3.tar.gz
+      path: /home/vagrant/hadoop-2.7.4.tar.gz
     register: hadoop_download
 
-  - name: download hadoop 2.7.3 
+  - name: download hadoop 2.7.4 
     get_url:
-       url=http://apache.claz.org/hadoop/common/hadoop-2.7.3/hadoop-2.7.3.tar.gz dest=/home/vagrant 
+       #url=http://apache.claz.org/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz dest=/home/vagrant 
+       url=http://apache.cs.utah.edu/hadoop/common/stable/hadoop-2.7.4.tar.gz dest=/home/vagrant 
     when: not hadoop_download.stat.exists
 
   - name: check hadoop directory existence
-    stat: path=/opt/hadoop-2.7.3
+    stat: path=/opt/hadoop-2.7.4
     register: hadoop_dir  
 
   - name: extract hadoop
-    unarchive: src=/home/vagrant/hadoop-2.7.3.tar.gz dest=/opt copy=no
+    unarchive: src=/home/vagrant/hadoop-2.7.4.tar.gz dest=/opt copy=no
     when: not hadoop_dir.stat.exists
     become: true
 
   - name: create symbolic link
-    file: src=/opt/hadoop-2.7.3 dest=/opt/hadoop state=link
+    file: src=/opt/hadoop-2.7.4 dest=/opt/hadoop state=link
     become: true
 
   - name: add the path of the Hadoop program to the PATH environment variable 
-    shell: echo "export PATH=/opt/hadoop-2.7.3/bin:$PATH" | sudo tee -a /etc/profile && source /etc/profile
+    shell: echo "export PATH=/opt/hadoop-2.7.4/bin:$PATH" | sudo tee -a /etc/profile && source /etc/profile
     become: true
 
   - name: add hadoop user
