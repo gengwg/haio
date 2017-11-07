@@ -40,7 +40,7 @@
   - name: download hadoop 2.7.4 
     get_url:
        #url=http://apache.claz.org/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz dest=/home/vagrant 
-       url=http://apache.cs.utah.edu/hadoop/common/stable/hadoop-2.7.4.tar.gz dest=/home/vagrant 
+       url=http://apache.cs.utah.edu/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz dest=/home/vagrant 
     when: not hadoop_download.stat.exists
 
   - name: check hadoop directory existence
@@ -132,25 +132,25 @@
   # Hive
   - name: check if hive is already downloaded
     stat:
-      path: /home/vagrant/apache-hive-2.3.0-bin.tar.gz
+      path: /home/vagrant/apache-hive-2.3.1-bin.tar.gz
     register: hive_download
 
-  - name: download hive 2.3.0
+  - name: download hive 2.3.1
     get_url:
-       url=http://apache.claz.org/hive/hive-2.3.0/apache-hive-2.3.0-bin.tar.gz dest=/home/vagrant
+       url=http://apache.claz.org/hive/hive-2.3.1/apache-hive-2.3.1-bin.tar.gz dest=/home/vagrant
     when: not hive_download.stat.exists
 
   - name: check hive directory existence
-    stat: path=/opt/apache-hive-2.3.0-bin
+    stat: path=/opt/apache-hive-2.3.1-bin
     register: hive_dir
 
   - name: extract hive
-    unarchive: src=/home/vagrant/apache-hive-2.3.0-bin.tar.gz dest=/opt copy=no
+    unarchive: src=/home/vagrant/apache-hive-2.3.1-bin.tar.gz dest=/opt copy=no
     when: not hive_dir.stat.exists
     become: true
 
   - name: create symbolic link
-    file: src=/opt/apache-hive-2.3.0-bin dest=/opt/hive state=link
+    file: src=/opt/apache-hive-2.3.1-bin dest=/opt/hive state=link
     become: true
 
   - name: chown hive dir
