@@ -1,4 +1,5 @@
 Hadoop/Hive All In One (HAIO). 
+Can be used for learning Hadoop/Hive etc. purpose.
 
 ## Prerequisites
 
